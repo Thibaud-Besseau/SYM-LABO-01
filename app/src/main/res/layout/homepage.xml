@@ -5,27 +5,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress" >
-        <requestFocus />
-    </EditText>
 
-    <EditText
-        android:id="@+id/password"
+    <TextView
+        android:id="@+id/WelcomeMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/psw"
-        android:inputType="textPassword" />
+        android:text="@string/good" />
+
+    <TextView
+        android:id="@+id/EmailUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
 
     <Button
-        android:id="@+id/buttOk"
+        android:id="@+id/buttlogoff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@android:string/ok" />
+        android:text="@string/logoff" />
 
 </LinearLayout>
