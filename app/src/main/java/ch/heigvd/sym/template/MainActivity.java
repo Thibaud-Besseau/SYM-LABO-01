@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 //test if the email input contain an @. If not display a toast
-                if (mail.indexOf("@") != 1) {
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
                     Toast.makeText(MainActivity.this, getResources().getString(R.string.wrongemail), Toast.LENGTH_LONG).show();
 
                 } else {
