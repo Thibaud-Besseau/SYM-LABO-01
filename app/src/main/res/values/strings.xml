@@ -9,4 +9,5 @@
     <string name="good">Valid login, welcome !</string>
     <string name="ok">OK</string>
     <string name="logoff">Log Off</string>
+    <string name="wrongemail">Incorrect Email</string>
 </resources>
