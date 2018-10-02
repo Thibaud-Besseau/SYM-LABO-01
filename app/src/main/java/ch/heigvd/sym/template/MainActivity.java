@@ -25,9 +25,14 @@
  */
 package ch.heigvd.sym.template;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -54,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestAppPermissions();
         // Show the welcome screen / login authentication dialog
         setContentView(R.layout.authent);
 
@@ -73,38 +79,46 @@ public class MainActivity extends AppCompatActivity {
                  */
                 String mail = email.getText().toString();
                 String passwd = password.getText().toString();
-                if (isValid(mail, passwd)) {
-                    /* Ok, valid combination, do something or launch another activity...
-                     * The current activity could be finished, but it is not mandatory.
-                     * To launch activity MyActivity.class, try something like :
-                     *
-                     * 			Intent intent = new Intent(this, ch.heigvd.sym.MyActivity.class);
-                     * 			intent.putExtra("emailEntered", mail);
-                     *			intent.putExtra("passwordGiven", passwd);
-                     *			this.startActivity(intent);
-                     *
-                     * Alternately, you could also startActivityForResult if you are awaiting a result.
-                     * In the latter case, you have to indicate an int parameter to identify MyActivity
-                     *
-                     * If you haven't anything more to do, you may finish()...
-                     * But just display a small message before quitting...
-                     */
 
-                    Intent intent = new Intent(MainActivity.this, ch.heigvd.sym.template.HomepageActivity.class);
-                    intent.putExtra("emailEntered", mail);
-                    intent.putExtra("passwordGiven", passwd);
-                    startActivity(intent);
 
-                    Toast.makeText(MainActivity.this, getResources().getString(R.string.good), Toast.LENGTH_LONG).show();
-                    finish();
+                //test if the email input contain an @. If not display a toast
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.wrongemail), Toast.LENGTH_LONG).show();
+
                 } else {
-                    // Wrong combination, display pop-up dialog and stay on login screen
-                    showErrorDialog(mail, passwd);
+
+                    if (isValid(mail, passwd)) {
+                        /* Ok, valid combination, do something or launch another activity...
+                         * The current activity could be finished, but it is not mandatory.
+                         * To launch activity MyActivity.class, try something like :
+                         *
+                         * 			Intent intent = new Intent(this, ch.heigvd.sym.MyActivity.class);
+                         * 			intent.putExtra("emailEntered", mail);
+                         *			intent.putExtra("passwordGiven", passwd);
+                         *			this.startActivity(intent);
+                         *
+                         * Alternately, you could also startActivityForResult if you are awaiting a result.
+                         * In the latter case, you have to indicate an int parameter to identify MyActivity
+                         *
+                         * If you haven't anything more to do, you may finish()...
+                         * But just display a small message before quitting...
+                         */
+
+                        Intent intent = new Intent(MainActivity.this, ch.heigvd.sym.template.HomepageActivity.class);
+                        intent.putExtra(HomepageActivity.emailEntered, mail);
+                        startActivity(intent);
+
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.good), Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        // Wrong combination, display pop-up dialog and stay on login screen
+                        showErrorDialog(mail, passwd);
 
 
-                    //clean inputs
-                    email.getText().clear();
-                    password.getText().clear();
+                        //clean inputs
+                        email.getText().clear();
+                        password.getText().clear();
+                    }
                 }
             }
 
@@ -135,6 +149,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         alertbd.create().show();
+    }
+
+
+    private void requestAppPermissions() {
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return;
+        }
+
+        if (hasReadPermissionsExternalStorage() && hasReadPermissionsForPhoneState()) {
+            return;
+        }
+
+        ActivityCompat.requestPermissions(this,
+                new String[] {
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE
+                }, 1); // your request code
+    }
+
+    private boolean hasReadPermissionsExternalStorage() {
+        return (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private boolean hasReadPermissionsForPhoneState() {
+        return (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED);
     }
 
 }
