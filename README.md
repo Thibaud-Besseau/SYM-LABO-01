@@ -18,3 +18,28 @@ Si nous souhaitons modifier cette icone, il faut suivre la procédure suivante:
 2. La placer dans le dossier `drawable` du projet
 3. Editer la propriété `android:icon=”@drawable/icon-name“` dans le android manifest
 
+#### Lorsque le login est réussi, vous êtes censé chaîner une autre Activity en utilisant un Intent. Si je presse le bouton "Back" de l'interface Android, que puis-je constater ? Comment faire pour que l'application se comporte de manière plus logique ? Veuillez discuter de la logique derrière les activités Android.
+
+Si on appuye sur "Back" depuis la seconde activité, on quitte l'application, car l'activité précédente a été terminée en appelant `finish()`. Si on veut revenir sur la première activité, il ne faut pas la terminer au moment de démarrer la deuxième activité.
+
+Android crée par défaut une pile d'activités ("Back Stack"), et le bouton "Back" permet de remonter dans cet historique d'activités. Ce comportement peut être modifié si besoin.
+
+#### On pourrait imaginer une situation où cette seconde Activity fournit un résultat (par exemple l’IMEI ou une autre chaîne de caractères) que nous voudrions récupérer dans l'Activity de départ. Comment procéder ?
+
+Il faut utiliser la méthode `startActivityForResult()`, qui permet de retourner un résultat à l'activité appelante via un callback (`onActivityResult()`).
+
+[Documentation](https://developer.android.com/training/basics/intents/result)
+
+#### Vous noterez que la méthode `getDeviceId()` du `TelephonyManager`, permettant d’obtenir l’IMEI du téléphone, est dépréciée depuis la version 26 de l’API. Veuillez discuter de ce que cela implique lors du développement et de présenter une façon d’en tenir compte avec un exemple de code.
+
+Cette méthode a été remplacée par la méthode [getImei()](https://developer.android.com/reference/android/telephony/TelephonyManager.html#getImei())
+
+```java
+TelephonyManager tm = (TelephonyManager) getSystemService(this.TELEPHONY_SERVICE);
+String imei = tm.getImei();
+```
+
+#### Dans l’activité de login, en plaçant le téléphone (ou l’émulateur) en mode paysage (landscape), nous constatons que les 2 champs de saisie ainsi que le bouton s’étendent sur toute la largeur de l’écran. Veuillez réaliser un layout spécifique au mode paysage qui permet un affichage mieux adapté et indiquer comment faire pour qu’il soit utilisé automatiquement à l’exécution.
+
+Il faut copier le fichier de layout dans un nouveau répertoire `/res/layout-land`, et l'adapter selon les besoins. Il sera alors automatiquement utilisé lorsque le téléphone passera en mode paysage.
+
