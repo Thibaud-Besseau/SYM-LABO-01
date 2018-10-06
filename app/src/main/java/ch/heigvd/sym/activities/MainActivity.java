@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,8 +22,8 @@ import ch.heigvd.sym.entities.UserAccount;
 
 public class MainActivity extends AppCompatActivity {
 
-    // For logging purposes
-    private static final String TAG = MainActivity.class.getSimpleName();
+    // for logging purposes
+    private static final String ACTIVITY_NAME = MainActivity.class.getSimpleName();
 
     // todo replace hard-coded user account by external data source
     private List<UserAccount> userAccounts = Arrays.asList(
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(ACTIVITY_NAME, "in onCreate() method");
+
+        // request permissions at runtime
         requestAppPermissions();
 
         setContentView(R.layout.authent);
@@ -115,5 +119,41 @@ public class MainActivity extends AppCompatActivity {
     private boolean hasReadPermissionsForPhoneState() {
         return (ContextCompat.checkSelfPermission(getBaseContext(),
                 Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(ACTIVITY_NAME, "in onStart() method");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(ACTIVITY_NAME, "in onRestart() method");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(ACTIVITY_NAME, "in onResume() method");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(ACTIVITY_NAME, "in onPause() method");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(ACTIVITY_NAME, "in onStop() method");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(ACTIVITY_NAME, "in onDestroy() method");
     }
 }
