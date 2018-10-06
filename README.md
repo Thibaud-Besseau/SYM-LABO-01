@@ -22,9 +22,9 @@ Si nous souhaitons modifier cette icone, il faut suivre la procédure suivante:
 
 ### 3. Lorsque le login est réussi, vous êtes censé chaîner une autre Activity en utilisant un Intent. Si je presse le bouton "Back" de l'interface Android, que puis-je constater ? Comment faire pour que l'application se comporte de manière plus logique ? Veuillez discuter de la logique derrière les activités Android.
 
-Si on appuye sur "Back" depuis la seconde activité, on quitte l'application, car l'activité précédente a été terminée en appelant `finish()`. Si on veut revenir sur la première activité, il ne faut pas la terminer au moment de démarrer la deuxième activité.
+Si on appuye sur "Back" depuis la seconde activité, on quitte l'application, car l'activité précédente a été terminée en appelant `finish()`. Si on veut revenir sur la première activité, il ne faut pas la terminer au moment de démarrer la deuxième activité. Nous avons modifié notre code de cette manière.
 
-Android crée par défaut une pile d'activités ("Back Stack"), et le bouton "Back" permet de remonter dans cet historique d'activités. Ce comportement peut être modifié si besoin.
+Android crée par défaut une pile d'activités ("Back Stack"), et le bouton "Back" permet de remonter dans cet historique d'activités. Ce comportement peut également être modifié si besoin.
 
 ### 4. On pourrait imaginer une situation où cette seconde Activity fournit un résultat (par exemple l’IMEI ou une autre chaîne de caractères) que nous voudrions récupérer dans l'Activity de départ. Comment procéder ?
 

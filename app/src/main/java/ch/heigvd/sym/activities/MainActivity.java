@@ -30,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
             new UserAccount("amel@heig.test", "amel", "pink.jpg"),
             new UserAccount("thibaud@heig.test", "thibaud", "blue.jpg"));
 
+    // UI elements
+    private static EditText editEmail;
+    private static EditText editPassword;
+    private static Button buttonSignIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.authent);
 
-        // UI elements
-        final EditText editEmail = findViewById(R.id.email);
-        final EditText editPassword = findViewById(R.id.password);
-        final Button buttonSignIn = findViewById(R.id.buttOk);
+        editEmail = findViewById(R.id.email);
+        editPassword = findViewById(R.id.password);
+        buttonSignIn = findViewById(R.id.buttOk);
 
         buttonSignIn.setOnClickListener(v -> {
             String email = editEmail.getText().toString();
@@ -63,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 showErrorDialog();
 
                 // clear inputs fields
-                editEmail.getText().clear();
-                editPassword.getText().clear();
+                clearInputFields();
 
                 return;
             }
@@ -73,10 +76,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, HomepageActivity.class);
             intent.putExtra(HomepageActivity.EXTRA_USER_ACCOUNT, userAccount.get());
             startActivity(intent);
-
-            // finish current activity
-            finish();
         });
+    }
+
+    private void clearInputFields() {
+        editEmail.getText().clear();
+        editPassword.getText().clear();
     }
 
     private Optional<UserAccount> tryFindUserAccount(String email, String password) {
@@ -125,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.i(ACTIVITY_NAME, "in onStart() method");
+
+        clearInputFields();
     }
 
     @Override
