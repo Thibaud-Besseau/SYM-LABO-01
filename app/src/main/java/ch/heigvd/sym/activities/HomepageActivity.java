@@ -1,4 +1,4 @@
-package ch.heigvd.sym.template;
+package ch.heigvd.sym.activities;
 
 import android.Manifest;
 import android.content.Context;
@@ -15,48 +15,43 @@ import android.widget.TextView;
 
 import java.io.File;
 
+import ch.heigvd.sym.entities.UserAccount;
+
 public class HomepageActivity extends AppCompatActivity {
 
-    public static String emailEntered;
-    // GUI elements
-    TextView emailTextView = null;
-    TextView imeiPhoneTextView = null;
-    ImageView pictureView = null;
-
+    public final static String EXTRA_USER_ACCOUNT = "userAccount";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Show the homepage
         setContentView(R.layout.homepage);
+
+        // UI elements
+        final TextView emailTextView = findViewById(R.id.emailUser);
+        final TextView imeiPhoneTextView = findViewById(R.id.imeiPhone);
+        final ImageView pictureView = findViewById(R.id.picture);
 
         //get info from Main Activity
         Intent intent = getIntent();
-        String mail = intent.getStringExtra(emailEntered);
+        UserAccount userAccount = (UserAccount)intent.getSerializableExtra(EXTRA_USER_ACCOUNT);
 
-        emailTextView = findViewById(R.id.emailUser);
-        emailTextView.setText(mail);
+        // set email
+        emailTextView.setText(userAccount.getEmail());
 
-
-        imeiPhoneTextView = findViewById(R.id.imeiPhone);
-
+        // set EMEI
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         imeiPhoneTextView.setText(tm.getImei());
 
-        pictureView = findViewById(R.id.picture);
-    //Display the picture
-        File imgFile = new  File("/sdcard/Images/test_image.jpg");
+        // set avatar picture
+        File imgFile = new  File("/sdcard/Download/" + userAccount.getAvatarFilename());
         if(imgFile.exists() == true) {
             Bitmap picture = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             pictureView.setImageBitmap(picture);
         }
-
     }
-
 }
 
 
